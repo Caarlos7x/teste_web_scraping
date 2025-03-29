@@ -3,7 +3,6 @@ import pandas as pd
 import pdfplumber
 import zipfile
 
-# Diretórios de armazenamento
 DOWNLOAD_DIR = "downloads"
 OUTPUT_DIR = "output"
 os.makedirs(OUTPUT_DIR, exist_ok=True)
@@ -37,19 +36,15 @@ def extrair_tabela_pdf(pdf_path):
         print("Nenhuma tabela encontrada no PDF.")
         return None
 
-    # Criar DataFrame
     df = pd.DataFrame(dados_tabela)
 
-    # Remover linhas vazias
     df.dropna(how="all", inplace=True)
 
-    # Definir cabeçalho correto
-    df.columns = df.iloc[0]  # Assumindo que a primeira linha contém o cabeçalho
-    df = df[1:]  # Remover a primeira linha que agora é cabeçalho
+    df.columns = df.iloc[0]
+    df = df[1:]
 
     print(f"PDF extraído com {df.shape[1]} colunas.")
 
-    # Substituir OD e AMB apenas nas colunas corretas, se existirem
     colunas_para_substituir = ["OD", "AMB"]
     
     for coluna in colunas_para_substituir:
